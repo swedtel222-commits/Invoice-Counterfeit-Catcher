@@ -52,19 +52,9 @@ export default function App() {
   const [folders, setFolders] = useState(["John Doe", "Sarah Jenkins", "Alex Rivera", "Unassigned Dept"]); 
   const [activeFolder, setActiveFolder] = useState("John Doe"); 
   const [newFolderName, setNewFolderName] = useState("");
-  const [selectedFraudGroup, setSelectedFraudGroup] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
 
   const fileInputRef = useRef(null);
-
-  /* Invoice Schema Definition */
-  const invoiceFields = [
-    { key: "invoice_number", label: "Invoice Number", type: "STRING" },
-    { key: "vendor_name", label: "Vendor Name", type: "STRING" },
-    { key: "invoice_date", label: "Invoice Date", type: "STRING" },
-    { key: "total_amount", label: "Total Amount", type: "NUMBER" },
-    { key: "currency", label: "Currency", type: "STRING" }
-  ];
 
   /* Load SheetJS on mount */
   useEffect(() => { 
@@ -174,7 +164,6 @@ export default function App() {
     }); 
     setSelectedFiles([]); 
     setExtractedInvoices([]); 
-    setSelectedFraudGroup(null);
     showNotification("Cleared all workspace documents."); 
   };
 
@@ -394,7 +383,7 @@ export default function App() {
   }, [analyzedReports, searchQuery]);
 
   return (
-    <div className={`min-h-screen font-sans ${theme === 'dark' ? 'bg-slate-950 text-slate-100' : 'bg-slate-50 text-slate-800'}`}>
+    <div className={`min-h-screen font-sans transition-colors duration-200 ${theme === 'dark' ? 'bg-slate-950 text-slate-100' : 'bg-slate-50 text-slate-800'}`}>
       
       {/* Toast Notification Banner */}
       {notification && (
@@ -411,7 +400,7 @@ export default function App() {
       <div className="flex flex-col lg:flex-row h-screen overflow-hidden">
         
         {/* Left Control Column */}
-        <aside className={`w-full lg:w-80 border-r flex flex-col flex-shrink-0 h-full overflow-y-auto
+        <aside className={`w-full lg:w-80 border-r flex flex-col flex-shrink-0 h-full overflow-y-auto transition-colors duration-200
           ${theme === 'dark' ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
           
           {/* Header Brand */}
@@ -422,7 +411,7 @@ export default function App() {
             </div>
             <button 
               onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-              className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500"
+              className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 transition-colors"
               title="Toggle Theme"
             >
               {theme === 'light' ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4 text-amber-400" />}
@@ -448,7 +437,7 @@ export default function App() {
                   placeholder="Enter custom Gemini Key..."
                   value={apiKey}
                   onChange={(e) => setApiKey(e.target.value)}
-                  className="w-full text-xs px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900"
+                  className="w-full text-xs px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-800 dark:text-slate-100"
                 />
               )}
             </div>
@@ -468,7 +457,7 @@ export default function App() {
                 placeholder="New profiles..."
                 value={newFolderName}
                 onChange={(e) => setNewFolderName(e.target.value)}
-                className="flex-1 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-slate-950"
+                className="flex-1 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-slate-950 text-slate-800 dark:text-slate-100"
               />
               <button 
                 type="submit" 
@@ -485,7 +474,7 @@ export default function App() {
                   key={folder}
                   onClick={() => setActiveFolder(folder)}
                   className={`flex items-center justify-between px-3 py-2.5 rounded-xl cursor-pointer transition-all border
-                    ${activeFolder === folder ? 'bg-blue-500 text-white border-blue-600 shadow-sm' : 'hover:bg-slate-100 dark:hover:bg-slate-800 border-transparent'}`}
+                    ${activeFolder === folder ? 'bg-blue-500 text-white border-blue-600 shadow-sm' : 'hover:bg-slate-100 dark:hover:bg-slate-800 border-transparent dark:text-slate-300'}`}
                 >
                   <div className="flex items-center gap-2 min-w-0">
                     <Folder className={`w-4 h-4 ${activeFolder === folder ? 'text-white' : 'text-blue-500'}`} />
@@ -508,7 +497,7 @@ export default function App() {
           </div>
 
           {/* Sidebar Stats Footer */}
-          <div className="p-4 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">
+          <div className="p-4 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 mt-auto">
             <div className="grid grid-cols-2 gap-2 text-center text-xs">
               <div className="bg-white dark:bg-slate-950 p-2 rounded-lg border dark:border-slate-800">
                 <span className="text-red-500 font-extrabold text-base block">{stats.notApproved}</span>
@@ -527,7 +516,7 @@ export default function App() {
         <main className="flex-1 flex flex-col h-full overflow-hidden">
           
           {/* Main Top Header */}
-          <header className={`px-6 py-4 border-b flex flex-col sm:flex-row items-center justify-between gap-4
+          <header className={`px-6 py-4 border-b flex flex-col sm:flex-row items-center justify-between gap-4 transition-colors duration-200
             ${theme === 'dark' ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
             <div className="flex items-center gap-4">
               <button 
@@ -586,10 +575,10 @@ export default function App() {
 
                 {/* Queue Workspace Details */}
                 {selectedFiles.length > 0 && (
-                  <div className={`p-6 rounded-2xl border ${theme === 'dark' ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
-                    <div className="flex items-center justify-between mb-4">
+                  <div className={`p-6 rounded-2xl border transition-colors duration-200 ${theme === 'dark' ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
                       <div>
-                        <h4 className="font-bold text-sm">Workspace Queue ({selectedFiles.length} item)</h4>
+                        <h4 className="font-bold text-sm">Workspace Queue ({selectedFiles.length} items)</h4>
                         <p className="text-xs text-slate-400">Assigned across folders for AI-powered scanning</p>
                       </div>
                       <div className="flex gap-2">
@@ -612,7 +601,7 @@ export default function App() {
 
                     <div className="divide-y divide-slate-100 dark:divide-slate-800">
                       {selectedFiles.map(item => (
-                        <div key={item.id} className="py-3 flex items-center justify-between gap-4">
+                        <div key={item.id} className="py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                           <div className="flex items-center gap-3 min-w-0">
                             {item.url ? (
                               <img src={item.url} className="w-10 h-10 rounded-lg object-cover bg-slate-100 border flex-shrink-0" alt="Receipt preview" />
@@ -631,12 +620,12 @@ export default function App() {
                             </div>
                           </div>
 
-                          <div className="flex items-center gap-3">
+                          <div className="flex items-center justify-between sm:justify-end gap-3 w-full sm:w-auto">
                             {/* Folder Switch Selector */}
                             <select 
                               value={item.folder}
                               onChange={(e) => reassignFileFolder(item.id, e.target.value)}
-                              className="text-[11px] border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 rounded-md px-1.5 py-1"
+                              className="text-[11px] border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 rounded-md px-1.5 py-1"
                             >
                               {folders.map(f => (
                                 <option key={f} value={f}>{f}</option>
@@ -644,20 +633,20 @@ export default function App() {
                             </select>
 
                             {/* Status Pill */}
-                            <div>
-                              {item.status === 'pending' && <span className="text-[10px] bg-slate-100 text-slate-600 px-2 py-1 rounded font-bold">Pending</span>}
+                            <div className="min-w-[80px] text-right">
+                              {item.status === 'pending' && <span className="text-[10px] bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 px-2 py-1 rounded font-bold">Pending</span>}
                               {item.status === 'processing' && (
-                                <span className="text-[10px] bg-blue-50 text-blue-600 px-2 py-1 rounded font-bold flex items-center gap-1">
+                                <span className="text-[10px] bg-blue-50 text-blue-600 px-2 py-1 rounded font-bold inline-flex items-center gap-1">
                                   <Loader2 className="w-3 h-3 animate-spin" /> Scanning
                                 </span>
                               )}
-                              {item.status === 'success' && <span className="text-[10px] bg-emerald-50 text-emerald-600 px-2 py-1 rounded font-bold">Scanned</span>}
-                              {item.status === 'error' && <span className="text-[10px] bg-red-50 text-red-600 px-2 py-1 rounded font-bold">Error</span>}
+                              {item.status === 'success' && <span className="text-[10px] bg-emerald-50 text-emerald-600 dark:bg-emerald-950/30 dark:text-emerald-400 px-2 py-1 rounded font-bold">Scanned</span>}
+                              {item.status === 'error' && <span className="text-[10px] bg-red-50 text-red-600 dark:bg-red-950/30 dark:text-red-400 px-2 py-1 rounded font-bold">Error</span>}
                             </div>
 
                             <button 
                               onClick={() => removeFile(item.id)}
-                              className="text-slate-400 hover:text-red-500 p-1"
+                              className="text-slate-400 hover:text-red-500 p-1 transition-colors"
                             >
                               <Trash2 className="w-4 h-4" />
                             </button>
@@ -681,7 +670,7 @@ export default function App() {
                       placeholder="Search transactions..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full pl-9 pr-4 py-2 border rounded-xl text-xs bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-700 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                      className="w-full pl-9 pr-4 py-2 border rounded-xl text-xs bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-700 focus:ring-2 focus:ring-blue-500 focus:outline-none text-slate-800 dark:text-slate-100"
                     />
                   </div>
                   <div className="text-xs text-slate-400 font-bold">
@@ -728,7 +717,7 @@ export default function App() {
                       }
 
                       return (
-                        <div key={inv.id} className={`rounded-xl border overflow-hidden flex flex-col justify-between ${cardColor}`}>
+                        <div key={inv.id} className={`rounded-xl border overflow-hidden flex flex-col justify-between transition-colors duration-200 ${cardColor}`}>
                           <div className="p-4 flex gap-4">
                             <div className="w-14 h-14 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center flex-shrink-0">
                               <FileText className="w-6 h-6 text-slate-400" />
